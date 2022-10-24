@@ -5,11 +5,23 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
+  build:
+    docker:
+    - image: circleci/openjdk:11-jdk-stretch
+    steps:
+     - checkout
+     - run: sbt compile
   say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    # mais info do docker ambiente : https://circleci.com/docs/using-docker/
     docker:
-      - image: cimg/base:stable
+      - image: circleci/openjdk:11-jdk-stretch
+      
+      # auth:
+        #username:
+        #password:
+
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
@@ -21,6 +33,9 @@ jobs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  version: 2
+  
+  my_workflow:
     jobs:
+      - build
       - say-hello
