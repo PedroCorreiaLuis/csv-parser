@@ -30,7 +30,10 @@ jobs:
     
     - store_test_results:
         path: target/test-reports
-  
+
+    - store_artifacts:
+        path: target/test-reports
+
 
     
 
