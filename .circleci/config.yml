@@ -15,6 +15,10 @@ jobs:
     steps:
     - checkout
     -  run: circleci tests glob "src/test/scala/TestExamples.scala"
+    - store_test_results:
+        path: test-results
+  
+
     
 
 
