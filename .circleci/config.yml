@@ -14,7 +14,7 @@ jobs:
     - image: circleci/openjdk:8u222-jdk-stretch
     steps:
     - checkout
-    -  run: circleci tests glob "src/test/scala/TestExamples.scala"
+    -  run: circleci tests glob "src/test/scala/TestExamples.scala" | circleci tests split
     - store_test_results:
         path: test-results
   
