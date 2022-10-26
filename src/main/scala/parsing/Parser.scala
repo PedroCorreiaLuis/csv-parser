@@ -15,12 +15,13 @@ object Parser extends Encoding {
       case IterableType(input) => ???
       case ReaderType(input)   => ???
       case SeqType(input) =>
-        val parsed: Seq[(String, String)] = input.map(parsingLogic)
+        val parsed: List[Either[String, String]] =
+          input.map(parsingLogic).toList
 
         ParsedCSV(
           headers = parserInput.headers,
-          parsedLines = parsed.map(_._1).iterator,
-          droppedLines = parsed.map(_._2).toList
+          parsedLines = parsed.map(_.right.get),
+          droppedLines = parsed.map(_.left.get)
         )
 
       case SourceType(input) => ???
@@ -53,6 +54,6 @@ object Parser extends Encoding {
     }
   }
 
-  private val parsingLogic: String => (String, String) = { ??? }
+  private val parsingLogic: String => Either[String, String] = { ??? }
 
 }
