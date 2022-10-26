@@ -29,7 +29,19 @@ object Parser extends Encoding {
         )
 
       case SourceType(input) => ???
-      case StreamType(input) => ???
+      case StreamType(input) =>
+        val parsed: Stream[Either[String, String]] = input.map(parsingLogic)
+
+        val (
+          droppedLines: List[Either[String, String]],
+          parsedLines: List[Either[String, String]]
+        ) = parsed.toList.partition(_.isLeft)
+
+        ParsedCSV(
+          headers = parserInput.headers,
+          parsedLines = droppedLines.map(_.merge),
+          droppedLines = parsedLines.map(_.merge)
+        )
     }
   }
 
@@ -50,7 +62,14 @@ object Parser extends Encoding {
               headers = headers
             )
           case SourceType(input) => ???
-          case StreamType(input) => ???
+          case StreamType(input) =>
+            val headers: List[String] = input.take(1).toList
+            val lines: Stream[String] = input.drop(1)
+            ParserInput(
+              in = StreamType(lines),
+              csvDefinition = parserInput.csvDefinition,
+              headers = headers
+            )
         }
       } else {
         parserInput
