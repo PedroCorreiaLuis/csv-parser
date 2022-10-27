@@ -2,7 +2,6 @@ package parsing
 
 import models._
 
-import java.io.{BufferedWriter, File, FileWriter}
 import scala.io.Source
 
 object Parser extends Encoding {
