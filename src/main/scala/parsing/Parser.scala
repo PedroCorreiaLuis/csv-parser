@@ -2,7 +2,7 @@ package parsing
 
 import models._
 
-import scala.io.{BufferedSource, Source}
+import scala.io.{Source}
 
 object Parser extends Encoding {
 
