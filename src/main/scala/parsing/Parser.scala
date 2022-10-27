@@ -2,7 +2,7 @@ package parsing
 
 import models._
 
-import scala.io.Source
+import scala.io.{BufferedSource, Source}
 
 object Parser extends Encoding {
 
@@ -15,9 +15,9 @@ object Parser extends Encoding {
       case IteratorType(input) => ???
       case IterableType(input) => ???
       case ReaderType(input)   =>
-        val source =  Source.fromString(input.toString)
-        val sourceLines = source.getLines()
-        val parsed = sourceLines.toList.map(parsingLogic)
+        val source: Source =  Source.fromString(input.toString)
+        val sourceLines: Iterator[String] = source.getLines()
+        val parsed: Seq[Either[EncodeType, EncodeType]] = sourceLines.toList.map(parsingLogic)
           source.close()
         val (
           droppedLines: List[Either[String, String]],
@@ -64,7 +64,7 @@ object Parser extends Encoding {
       if (parserInput.headers.isEmpty) {
         parserInput.in match {
           case FileType(input) =>
-            val source= Source.fromFile(input)
+            val source: Source = Source.fromFile(input.toString)
             val sourceLines: Iterator[String] = source.getLines()
             val headers: List[EncodeType] = sourceLines.take(1).toList
             val lines: Iterator[String] = sourceLines
@@ -76,15 +76,15 @@ object Parser extends Encoding {
           case IteratorType(input) => ???
           case IterableType(input) => ???
           case ReaderType(input) =>
-            val source = Source.fromString(input.toString)
-            val sourceLines = source.getLines()
-            val headers = sourceLines.take(1).toList
+            val source: Source = Source.fromString(input.toString)
+            val sourceLines: Iterator[String] = source.getLines()
+            val headers: Seq[EncodeType] = sourceLines.take(1).toList
             val lines = sourceLines
             source.close()
               ParserInput(
                 in = IteratorType(lines),
                 csvDefinition = parserInput.csvDefinition,
-                headers = headers
+                headers = headers.toList
               )
           case SeqType(input) =>
             val headers: List[String] = input.take(1).toList
