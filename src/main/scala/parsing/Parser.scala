@@ -12,8 +12,30 @@ object Parser extends Encoding {
 
   private val parsedCsv: ParserInput => ParsedCSV = parserInput => {
     parserInput.in match {
-      case IteratorType(input) => ???
-      case IterableType(input) => ???
+      case IteratorType(input) =>
+        val parsed: Iterator[Either[EncodeType, EncodeType]] = input.map(parsingLogic)
+        val (
+          droppedLines: Iterator[Either[String, String]],
+          parsedLines: Iterator[Either[String, String]]
+          ) = parsed.partition(_.isLeft)
+
+        ParsedCSV(
+          headers = parserInput.headers,
+          parsedLines = droppedLines.map(_.merge).toList,
+          droppedLines = parsedLines.map(_.merge).toList
+        )
+      case IterableType(input) =>
+        val parsed: Seq[Either[EncodeType, EncodeType]] = input.toList.map(parsingLogic)
+        val (
+          droppedLines: List[Either[String, String]],
+          parsedLines: List[Either[String, String]]
+          ) = parsed.partition(_.isLeft)
+
+        ParsedCSV(
+          headers = parserInput.headers,
+          parsedLines = droppedLines.map(_.merge),
+          droppedLines = parsedLines.map(_.merge)
+        )
       case ReaderType(input)   =>
         val source: Source =  Source.fromString(input.toString)
         val sourceLines: Iterator[String] = source.getLines()
@@ -73,8 +95,22 @@ object Parser extends Encoding {
                 in = IteratorType(lines),
                 csvDefinition = parserInput.csvDefinition,
                 headers = headers)
-          case IteratorType(input) => ???
-          case IterableType(input) => ???
+          case IteratorType(input) =>
+            val headers = input.take(1).toList
+            val lines = input
+            ParserInput(
+              in = IteratorType(lines),
+              csvDefinition = parserInput.csvDefinition,
+              headers = headers
+            )
+          case IterableType(input) =>
+            val headers: Iterable[EncodeType] = input.take(1)
+            val lines = input.drop(1)
+            ParserInput(
+              in = IterableType(lines),
+              csvDefinition = parserInput.csvDefinition,
+              headers = headers.toList
+            )
           case ReaderType(input) =>
             val source: Source = Source.fromString(input.toString)
             val sourceLines: Iterator[String] = source.getLines()
