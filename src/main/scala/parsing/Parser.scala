@@ -39,17 +39,9 @@ object Parser extends Encoding {
           droppedLines = parsedLines.map(_.merge)
         )
       case ReaderType(input) =>
-        val xD = input.read().toString
-        var newLine: String = ""
-        var x: List[String] = Nil
-         val func = for(i <- 0 to xD.length ){
-            newLine += xD.charAt(i)
-          if(xD.charAt(i) == delimiter){
-            x = x :+newLine
-          }
-        }
-      val parsed = x.map(parsingLogic)
-
+        val getString = Iterator.continually(input.read().toChar).takeWhile(_ != delimiter).toString()
+        val listStrings: List[String] = listStrings :+ getString
+        val parsed = listStrings.map(parsingLogic)
         val (
           droppedLines: List[Either[String, String]],
           parsedLines: List[Either[String, String]]
