@@ -1,8 +1,7 @@
 package parsing
 
-import formats.CSV.delimiter
+import formats.CSV.{delimiter, terminator}
 import models._
-
 
 import scala.io.Source
 
@@ -39,9 +38,9 @@ object Parser extends Encoding {
           droppedLines = parsedLines.map(_.merge)
         )
       case ReaderType(input) =>
-        val getString = Iterator.continually(input.read().toChar).takeWhile(_ != delimiter).toString()
-        val listStrings: List[String] = listStrings :+ getString
-        val parsed = listStrings.map(parsingLogic)
+        val iterator = Iterator.continually(input.read().toChar).toList
+        val lines = iterator.map(_.toString)
+        val parsed = lines.map(parsingLogic)
         val (
           droppedLines: List[Either[String, String]],
           parsedLines: List[Either[String, String]]
@@ -49,8 +48,8 @@ object Parser extends Encoding {
 
         ParsedCSV(
           headers = parserInput.headers,
-          parsedLines = droppedLines.map(_.merge),
-          droppedLines = parsedLines.map(_.merge)
+          parsedLines = parsedLines.map(_.merge),
+          droppedLines = droppedLines.map(_.merge)
         )
 
       case SeqType(input) =>
@@ -128,15 +127,13 @@ object Parser extends Encoding {
               headers = headers.toList
             )
           case ReaderType(input) =>
-            val source: Source = Source.fromString(input.toString)
-            val sourceLines: Iterator[String] = source.getLines()
-            val headers: Seq[EncodeType] = sourceLines.take(1).toList
-            val lines = sourceLines
-            source.close()
+            val iterator = Iterator.continually(input.read().toChar).toList
+            val headers = iterator.takeWhile(_ != terminator).mkString.split(delimiter).toList
+            val lines = iterator
             ParserInput(
-              in = IteratorType(lines),
+              in = IteratorType(lines.toIterator.map(_.toString)),
               csvDefinition = parserInput.csvDefinition,
-              headers = headers.toList
+              headers = headers
             )
 
           case SeqType(input) =>
