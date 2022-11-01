@@ -2,8 +2,8 @@ package parsing
 
 import formats.CSV.{delimiter, terminator}
 import models._
-
 import scala.io.Source
+
 
 object Parser extends Encoding {
 
@@ -38,18 +38,19 @@ object Parser extends Encoding {
           droppedLines = parsedLines.map(_.merge)
         )
       case ReaderType(input) =>
-        val iterator = Iterator.continually(input.read().toChar).toList
-        val lines = iterator.map(_.toString)
-        val parsed = lines.map(parsingLogic)
+        val iterator = Iterator.continually(input.read().toChar).toArray
+        val lines  = Source.fromChars(iterator)
+        lines.close()
+        val parsed = lines.getLines().map(parsingLogic)
         val (
-          droppedLines: List[Either[String, String]],
-          parsedLines: List[Either[String, String]]
+          droppedLines: Iterator[Either[String, String]],
+          parsedLines: Iterator[Either[String, String]]
           ) = parsed.partition(_.isLeft)
 
         ParsedCSV(
           headers = parserInput.headers,
-          parsedLines = parsedLines.map(_.merge),
-          droppedLines = droppedLines.map(_.merge)
+          parsedLines = parsedLines.map(_.merge).toList,
+          droppedLines = droppedLines.map(_.merge).toList
         )
 
       case SeqType(input) =>
@@ -127,13 +128,14 @@ object Parser extends Encoding {
               headers = headers.toList
             )
           case ReaderType(input) =>
-            val iterator = Iterator.continually(input.read().toChar).toList
-            val headers = iterator.takeWhile(_ != terminator).mkString.split(delimiter).toList
-            val lines = iterator
+            val iterator: Array[Char] = Iterator.continually(input.read().toChar).toArray
+            val headers: Seq[EncodeType] = iterator.takeWhile(_ != terminator).toList.mkString.split(delimiter).toList
+            val lines = Source.fromChars(iterator)
+             lines.close()
             ParserInput(
-              in = IteratorType(lines.toIterator.map(_.toString)),
+              in = IteratorType(lines.getLines()),
               csvDefinition = parserInput.csvDefinition,
-              headers = headers
+              headers = headers.toList
             )
 
           case SeqType(input) =>
