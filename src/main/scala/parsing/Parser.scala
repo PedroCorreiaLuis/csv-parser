@@ -40,8 +40,8 @@ object Parser extends Encoding {
       case ReaderType(input) =>
         val iterator = Iterator.continually(input.read().toChar).toArray
         val lines  = Source.fromChars(iterator)
-        lines.close()
         val parsed = lines.getLines().map(parsingLogic)
+        lines.close()
         val (
           droppedLines: Iterator[Either[String, String]],
           parsedLines: Iterator[Either[String, String]]
@@ -130,14 +130,14 @@ object Parser extends Encoding {
           case ReaderType(input) =>
             val iterator: Array[Char] = Iterator.continually(input.read().toChar).toArray
             val headers: Seq[EncodeType] = iterator.takeWhile(_ != terminator).toList.mkString.split(delimiter).toList
-            val lines = Source.fromChars(iterator)
-             lines.close()
+            val source = Source.fromChars(iterator)
+            val lines = source.getLines()
+            source.close()
             ParserInput(
-              in = IteratorType(lines.getLines()),
+              in = IteratorType(lines),
               csvDefinition = parserInput.csvDefinition,
               headers = headers.toList
             )
-
           case SeqType(input) =>
             val headers: List[String] = input.take(1).toList
             val lines: Seq[String] = input.drop(1)
@@ -146,7 +146,6 @@ object Parser extends Encoding {
               csvDefinition = parserInput.csvDefinition,
               headers = headers
             )
-
           case SourceType(input) =>
             val headers: Iterator[String] = input.getLines().take(1)
             val lines: Iterator[String] = input.getLines()
