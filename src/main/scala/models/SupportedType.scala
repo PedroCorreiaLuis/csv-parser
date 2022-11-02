@@ -8,30 +8,14 @@ sealed trait SupportedType {
   val input: InputType
 }
 
-case class FileType(input: File) extends SupportedType {
-  override type InputType = File
-}
+sealed trait TraversableType[A <: TraversableOnce[String]] extends SupportedType { override type InputType = A }
+sealed trait NonTraversableType[A] extends SupportedType { override type InputType = A }
 
-case class IteratorType(input: Iterator[String]) extends SupportedType {
-  override type InputType = Iterator[String]
-}
+final case class IteratorType(input: Iterator[String]) extends TraversableType[Iterator[String]]
+final case class IterableType(input: Iterable[String]) extends TraversableType[Iterable[String]]
+final case class SeqType(input: Seq[String]) extends TraversableType[Seq[String]]
+final case class StreamType(input: Stream[String]) extends TraversableType[Stream[String]]
 
-case class IterableType(input: Iterable[String]) extends SupportedType {
-  override type InputType = Iterable[String]
-}
-
-case class ReaderType(input: Reader) extends SupportedType {
-  override type InputType = Reader
-}
-
-case class SeqType(input: Seq[String]) extends SupportedType {
-  override type InputType = Seq[String]
-}
-
-case class SourceType(input: Source) extends SupportedType {
-  override type InputType = Source
-}
-
-case class StreamType(input: Stream[String]) extends SupportedType {
-  override type InputType = Stream[String]
-}
+final case class FileType(input: File) extends NonTraversableType[File]
+final case class ReaderType(input: Reader) extends NonTraversableType[Reader]
+final case class SourceType(input: Source) extends NonTraversableType[Source]
