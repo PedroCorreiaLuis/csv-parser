@@ -29,10 +29,10 @@ jobs:
     - run: cat /dev/null | sbt test
     
     - store_test_results:
-        path: target/test-reports
+        path: target/test-reports/TEST-parsing.extractHeadersTests.xml
 
     - store_artifacts:
-        path: target/test-reports
+        path: target/test-reports/TEST-parsing.extractHeadersTests.xml
 
 
     
