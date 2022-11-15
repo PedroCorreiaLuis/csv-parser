@@ -16,23 +16,27 @@ jobs:
     #- image: circleci/openjdk:8u222-jdk-stretch
     steps:
     - checkout
+    
+  test:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/repo
+    steps:
+    - checkout
     - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "build.sbt" }}
-             fallback to using the latest cache if no exact match is found
+             #fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-    - run: cat /dev/null | sbt test / compile
+    - run: cat /dev/null | sbt test:compile
     - save_cache:
           paths:
             - ~/.m2
           key: v1-dependencies--{{ checksum "build.sbt" }}
-    - run: cat /dev/null | sbt clean reload test
+    - run: cat /dev/null | sbt test
     
     - store_test_results:
-        path: target/test-reports
-
-    - store_artifacts:
-        path: target/test-reports
+        path: target/test-reports/TEST-parsing.extractHeadersTests.xml
 
 
     
@@ -46,4 +50,6 @@ workflows:
   my_workflow:
     jobs:
       - build
+      - test
+  
 
