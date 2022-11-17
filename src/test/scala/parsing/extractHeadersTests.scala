@@ -28,10 +28,10 @@ class extractHeadersTests extends AnyFlatSpec {
     )(Parser.encode)
 
     val getHeader: ParserInput = extractHeaders(parseInputSource)
-    getHeader.headers shouldBe Iterator("Ballon dor, ola").toList
+    getHeader.headers shouldBe List("Ballon dor, ola")
 
     val getHeader1: ParserInput = extractHeaders(parseInputSource1)
-    getHeader1.headers shouldBe Iterator("Ballon dor,,,,,Ballon dor feminin,Kopa Trophy,,,,Yashing Trophy,").toList
+    getHeader1.headers shouldBe List("Ballon dor,,,,,Ballon dor feminin,Kopa Trophy,,,,Yashing Trophy,")
   }
 
   "Iterator with CSV format with CSVdefinition" should "return the headers" in {
@@ -58,13 +58,13 @@ class extractHeadersTests extends AnyFlatSpec {
     )(Parser.encode)
 
     val getHeader: ParserInput = extractHeaders(parseInputSource)
-    getHeader.headers shouldBe Iterator("Ballon dor\n\n\n\n\n,,,\\\\\\\\,,Ballon dor feminin,Kopa Trophy,\r\n,,\r\n,Yashing Trophy,").toList
+    getHeader.headers shouldBe List("Ballon dor\n\n\n\n\n,,,\\\\\\\\,,Ballon dor feminin,Kopa Trophy,\r\n,,\r\n,Yashing Trophy,")
 
     val getHeaderSource1: ParserInput = extractHeaders(parseInputSource1)
-    getHeaderSource1.headers shouldBe Iterator("Ballon dor\n\n\n\n\n,,,\\\\\\\\,,Ballon dor feminin,Kopa Trophy,\r\n,,\r\n,Yashing Trophy,,,,\n\n\n\n\r\n\r\n").toList
+    getHeaderSource1.headers shouldBe List("Ballon dor\n\n\n\n\n,,,\\\\\\\\,,Ballon dor feminin,Kopa Trophy,\r\n,,\r\n,Yashing Trophy,,,,\n\n\n\n\r\n\r\n")
 
     val getHeaderSource2: ParserInput = extractHeaders(parseInputSource2)
-    getHeaderSource2.headers shouldBe Iterator("\"Ballon Dor List\",\"club\"\n\"Karim Benzema\", \"Real Madrid\"\n\"Sadio Mane\", \"Liverpool\"\n\"Kevin De Bruyne\", \"Manchester  City\"\n\"Robert Lewandowski\", \"Barcelona\"\n\"Mohamed Salah\", \"Liverpool\"\n\"Ricardo Esgaio\", \"Sporting\"\n\"Mbappe\", \"PSG\"").toList
+    getHeaderSource2.headers shouldBe List("\"Ballon Dor List\",\"club\"\n\"Karim Benzema\", \"Real Madrid\"\n\"Sadio Mane\", \"Liverpool\"\n\"Kevin De Bruyne\", \"Manchester  City\"\n\"Robert Lewandowski\", \"Barcelona\"\n\"Mohamed Salah\", \"Liverpool\"\n\"Ricardo Esgaio\", \"Sporting\"\n\"Mbappe\", \"PSG\"")
   }
 
 
@@ -91,13 +91,13 @@ class extractHeadersTests extends AnyFlatSpec {
     )(Parser.encode)
 
     val getHeader: ParserInput = extractHeaders(parseInputSource)
-    getHeader.headers shouldBe Iterator("Ballon Dor List").toList
+    getHeader.headers shouldBe List("Ballon Dor List")
 
     val getHeaderSource1: ParserInput = extractHeaders(parseInputSource1)
-    getHeaderSource1.headers shouldBe Iterator("Ballon Dor List").toList
+    getHeaderSource1.headers shouldBe List("Ballon Dor List")
 
     val getHeaderSource2: ParserInput = extractHeaders(parseInputSource2)
-    getHeaderSource2.headers shouldBe Iterator("\"Ballon Dor List\"|\"club\"\n\"Karim Benzema\"|\"Real Madrid\"\n\"Sadio Mane\" | \"Liverpool\"\n\"Kevin De Bruyne\" | \"Manchester  City\"\n\"Robert Lewandowski\" | \"Barcelona\"\n\"Mohamed Salah\" | \"Liverpool\"\n\"Ricardo Esgaio\" | \"Sporting\"\n\"Mbappe\" | \"PSG\"").toList
+    getHeaderSource2.headers shouldBe List("\"Ballon Dor List\"|\"club\"\n\"Karim Benzema\"|\"Real Madrid\"\n\"Sadio Mane\" | \"Liverpool\"\n\"Kevin De Bruyne\" | \"Manchester  City\"\n\"Robert Lewandowski\" | \"Barcelona\"\n\"Mohamed Salah\" | \"Liverpool\"\n\"Ricardo Esgaio\" | \"Sporting\"\n\"Mbappe\" | \"PSG\"")
   }
 
   "Iterator with TSV format from CSVDefinition" should "return headers" in {
@@ -124,13 +124,13 @@ class extractHeadersTests extends AnyFlatSpec {
     )(Parser.encode)
 
     val getHeader: ParserInput = extractHeaders(parseInputSource)
-    getHeader.headers shouldBe Iterator("Ballon dor\tBallon dor feminin\tKopa Trophy\t\\r\\n\t\t\\r\\n\tYashing Trophy\t").toList
+    getHeader.headers shouldBe List("Ballon dor\tBallon dor feminin\tKopa Trophy\t\\r\\n\t\t\\r\\n\tYashing Trophy\t")
 
     val getHeaderSource1: ParserInput = extractHeaders(parseInputSource1)
-    getHeaderSource1.headers shouldBe Iterator("Ballon Dor List\t club").toList
+    getHeaderSource1.headers shouldBe List("Ballon Dor List\t club")
 
     val getHeaderSource2: ParserInput = extractHeaders(parseInputSource2)
-    getHeaderSource2.headers shouldBe Iterator("Ballon Dor List\t\t\t\tclub\r\n").toList
+    getHeaderSource2.headers shouldBe List("Ballon Dor List\t\t\t\tclub\r\n")
   }
 
 
@@ -152,10 +152,10 @@ class extractHeadersTests extends AnyFlatSpec {
     )(Parser.encode)
 
     val getHeader: ParserInput = extractHeaders(parseInputSource)
-    getHeader.headers shouldBe Seq("Ballon dor").toList
+    getHeader.headers shouldBe List("Ballon dor")
 
     val getHeader1: ParserInput = extractHeaders(parseInputSource1)
-    getHeader1.headers shouldBe Seq("Ballon dor,,,,,Ballon dor feminin,Kopa Trophy,,,,Yashing Trophy,").toList
+    getHeader1.headers shouldBe List("Ballon dor,,,,,Ballon dor feminin,Kopa Trophy,,,,Yashing Trophy,")
   }
 
   "Seq with CSV format from CSVdefinition " should "return the headers" in {
@@ -175,10 +175,10 @@ class extractHeadersTests extends AnyFlatSpec {
     )(Parser.encode)
 
     val getHeader: ParserInput = extractHeaders(parseInputSource)
-    getHeader.headers shouldBe Seq("Ballon dor\n\n\n\n\n,,,\\\\\\\\,,Ballon dor feminin,Kopa Trophy,\r\n,,\r\n,Yashing Trophy,").toList
+    getHeader.headers shouldBe List("Ballon dor\n\n\n\n\n,,,\\\\\\\\,,Ballon dor feminin,Kopa Trophy,\r\n,,\r\n,Yashing Trophy,")
 
     val getHeaderSource1: ParserInput = extractHeaders(parseInputSource1)
-    getHeaderSource1.headers shouldBe Seq("Ballon dor\n\n\n\n\n,,,\\\\\\\\,,Ballon dor feminin,Kopa Trophy,\r\n,,\r\n,Yashing Trophy,,,,\n\n\n\n\r\n\r\n").toList
+    getHeaderSource1.headers shouldBe List("Ballon dor\n\n\n\n\n,,,\\\\\\\\,,Ballon dor feminin,Kopa Trophy,\r\n,,\r\n,Yashing Trophy,,,,\n\n\n\n\r\n\r\n")
   }
 
   "Seq with PSV format from CSVdefinition " should "return the headers" in {
@@ -205,13 +205,13 @@ class extractHeadersTests extends AnyFlatSpec {
     )(Parser.encode)
 
     val getHeader: ParserInput = extractHeaders(parseInputSource)
-    getHeader.headers shouldBe Seq("Ballon Dor List").toList
+    getHeader.headers shouldBe List("Ballon Dor List")
 
     val getHeaderSource1: ParserInput = extractHeaders(parseInputSource1)
-    getHeaderSource1.headers shouldBe Seq("Ballon Dor List").toList
+    getHeaderSource1.headers shouldBe List("Ballon Dor List")
 
     val getHeaderSource2: ParserInput = extractHeaders(parseInputSource2)
-    getHeaderSource2.headers shouldBe Seq("\"Ballon Dor List\"|\"club\"\n\"Karim Benzema\"|\"Real Madrid\"\n\"Sadio Mane\" | \"Liverpool\"\n\"Kevin De Bruyne\" | \"Manchester  City\"\n\"Robert Lewandowski\" | \"Barcelona\"\n\"Mohamed Salah\" | \"Liverpool\"\n\"Ricardo Esgaio\" | \"Sporting\"\n\"Mbappe\" | \"PSG\"").toList
+    getHeaderSource2.headers shouldBe List("\"Ballon Dor List\"|\"club\"\n\"Karim Benzema\"|\"Real Madrid\"\n\"Sadio Mane\" | \"Liverpool\"\n\"Kevin De Bruyne\" | \"Manchester  City\"\n\"Robert Lewandowski\" | \"Barcelona\"\n\"Mohamed Salah\" | \"Liverpool\"\n\"Ricardo Esgaio\" | \"Sporting\"\n\"Mbappe\" | \"PSG\"")
 
 
   }
@@ -240,13 +240,13 @@ class extractHeadersTests extends AnyFlatSpec {
     )(Parser.encode)
 
     val getHeader: ParserInput = extractHeaders(parseInputSource)
-    getHeader.headers shouldBe Seq("Ballon dor\tBallon dor feminin\tKopa Trophy\t\\r\\n\t\t\\r\\n\tYashing Trophy\t").toList
+    getHeader.headers shouldBe List("Ballon dor\tBallon dor feminin\tKopa Trophy\t\\r\\n\t\t\\r\\n\tYashing Trophy\t")
 
     val getHeaderSource1: ParserInput = extractHeaders(parseInputSource1)
-    getHeaderSource1.headers shouldBe Seq("Ballon Dor List\t club").toList
+    getHeaderSource1.headers shouldBe List("Ballon Dor List\t club")
 
     val getHeaderSource2: ParserInput = extractHeaders(parseInputSource2)
-    getHeaderSource2.headers shouldBe Seq("Ballon Dor List\t\t\t\tclub\r\n").toList
+    getHeaderSource2.headers shouldBe List("Ballon Dor List\t\t\t\tclub\r\n")
   }
 
 }
