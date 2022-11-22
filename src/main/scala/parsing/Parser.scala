@@ -42,8 +42,8 @@ object Parser extends Encoding {
     }
   }
 
-  private val extractHeaders: ParserInput => ParserInput = { parserInput =>
-    def buildParserInput(input: TraversableType[_], headers: List[String]): ParserInput = ParserInput(
+  private[parsing] val extractHeaders: ParserInput => ParserInput = { parserInput =>
+     def buildParserInput(input: TraversableType[_], headers: List[String]): ParserInput = ParserInput(
       in = input,
       csvDefinition = parserInput.csvDefinition,
       headers = headers
@@ -81,6 +81,6 @@ object Parser extends Encoding {
     }
   }
 
-  private val parsingLogic: String => Either[String, String] = { ??? }
+  private val parsingLogic: String => Either[String, String] = {line => ???}
 
 }
