@@ -533,6 +533,7 @@ class ExtractHeadersTests extends AnyFlatSpec {
       "Ballon dor\n\n\n\n\n,,,\\\\\\\\,,Ballon dor feminin,Kopa Trophy,\r\n,,\r\n,Yashing Trophy,,,,\n\n\n\n\r\n\r\n"
     )
   }
+
   "Stream with PSV format from CSVdefinition " should "return the headers" in {
 
     val source: Stream[String] = Stream("Ballon Dor List", "| club\nKarim Benzema")
