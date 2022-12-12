@@ -1,5 +1,6 @@
 package parsing
 
+
 import models.{IterableType, IteratorType, ParserInput, SeqType, StreamType}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers._
@@ -324,7 +325,7 @@ class ExtractHeadersTests extends AnyFlatSpec {
     val getHeaderSource2: ParserInput = extractHeaders(parseInputSource2)
     getHeaderSource2.headers shouldBe List("Ballon Dor List\t\t\t\tclub\r\n")
   }
-
+  
   "Iterable" should "return header" in {
 
     val source: Iterable[String] = Iterable("Ballon dor", "Karim Benzema")
